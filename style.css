@@ -1,0 +1,75 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 1% 2%;
+    width: 96%;
+    min-height: 950px;
+    font-family: 'Raleway', sans-serif;
+    font-size: 1.4em;
+    color: rgb(45, 69, 185);
+    background: rgb(194,194,194);
+    background: radial-gradient(circle, rgba(194,194,194,1) 0%, rgba(108,104,104,1) 100%);
+}
+
+#container {
+    display: grid;
+    grid-auto-rows: 70px;
+    grid-gap: 3px;
+    justify-content: center;
+}
+
+.element {
+    cursor: pointer;
+    border-radius: .4em;
+    filter: saturate(75%);
+    transition: 0.2s;
+}
+
+.element:hover {
+    transform: scale(1.05);
+    filter: saturate(100%);
+    filter: sepia(10%);
+}
+
+input {
+    border: none;
+    border-radius: 1em;
+    text-align: center;
+    font-size: 1em;
+    background-color:rgba(0, 0, 0, 0);
+    color: rgb(45, 69, 185);
+    border: 2px solid rgb(45, 69, 185);
+    transition: .7s ease-in;
+}
+
+input:hover {
+    background-color: rgb(45, 69, 185);
+    color: white;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+button {
+    width: 100px;
+    height: 30px;
+    border: none;
+    background-color: purple;
+    border-radius: 1em;
+    text-align: center;
+    cursor: pointer;
+    background-color: rgb(45, 69, 185);
+    color: white;
+    transition: .7s;
+    font-family: 'Raleway', sans-serif;
+
+}
+
+button:hover {
+    background-color: rgb(0, 23, 139);
+}
