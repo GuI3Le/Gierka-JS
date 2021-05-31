@@ -6,6 +6,10 @@ let rowsNumber = 0;
 let clicksTab = [];
 let colorsTab = [];
 let twoDivs = [];
+let divs;
+let divsCount;
+let elementsNumber = 0;
+let divsIds = [];
 const container = document.getElementById('container');
 
 //funkcja losujaca kolor hex
@@ -34,7 +38,8 @@ function chooseColor() {
 
 //funkcja czyszczaca tablice z kolorami
 function clearTab(tab) {
-    tab.length = 0;
+    if (tab != undefined)
+        tab.length = 0;
 }
 
 //funkcja sprawdzajaca czy klikniete elementy sa obok siebie i zmienia ich kolor na bialy
@@ -43,18 +48,19 @@ function checkID(tab, columnsNumber) {
     let secondID = parseInt(tab[1]);
     let firstColor = document.getElementById(firstID);
     let secondColor = document.getElementById(secondID);
-    console.log('kolumny2')
-    console.log(columnsNumber)
-    console.log(secondID + parseInt(columnsNumber));
-    console.log(firstID + parseInt(columnsNumber));
-    console.log(firstID);
-    console.log(secondID);
+    //console.log('kolumny2')
+    //console.log(columnsNumber)
+    //console.log(secondID + parseInt(columnsNumber));
+    //console.log(firstID + parseInt(columnsNumber));
+    //console.log(firstID);
+    //console.log(secondID);
     if ((((firstID == secondID + 1) || (firstID == secondID - 1)) || ((firstID == secondID - columnsNumber) || (secondID == firstID - columnsNumber))) && (firstColor.style.backgroundColor == secondColor.style.backgroundColor)) {
         // console.log(document.getElementById(tab[0]).style.backgroundColor);
         // console.log(document.getElementById(tab[1]).style.backgroundColor);
-        console.log('są obok w poziomie i mają ten sam kolor')
+        //console.log('są obok w poziomie i mają ten sam kolor')
         firstColor.style.backgroundColor = 'rgb(255, 255, 255)';
         secondColor.style.backgroundColor = 'rgb(255, 255, 255)';
+        return true;
     }
 }
 
@@ -65,14 +71,17 @@ function checkID(tab, columnsNumber) {
 
 //funkcja generujaca pole gry
 document.getElementById("generator").onclick = function generate() {
-
+    clearTab(divs);
+    clearTab(colorsTab);
+    clearTab(twoDivs);
+    elementsNumber = 0;
     createTab();
     rowsNumber = document.getElementById("rows").value;
     columnsNumber = document.getElementById("columns").value;
     clicks++;
     if (clicks != 0) {
         childNumber = container.childElementCount;
-        console.log(childNumber);
+        //console.log(childNumber);
         for (var i = 0; i < childNumber; i++) {
             let currentId = i;
             child = document.getElementById(currentId);
@@ -82,9 +91,9 @@ document.getElementById("generator").onclick = function generate() {
 
     container.style.gridTemplateColumns = 'repeat(' + columnsNumber + ', 70px)';
 
-    let elementsNumber = rowsNumber * columnsNumber;
-    console.log(columnsNumber)
-    console.log(rowsNumber)
+    elementsNumber = rowsNumber * columnsNumber;
+    //console.log(columnsNumber)
+    //console.log(rowsNumber)
 
     for (var i = 0; i < elementsNumber; i++) {
         let element = document.createElement('div');
@@ -95,37 +104,70 @@ document.getElementById("generator").onclick = function generate() {
         document.getElementById('container').appendChild(element);
     }
 
-    var divs = document.getElementsByClassName("element");
-    console.log(divs);
-    var divsCount = divs.length;
+    divs = document.getElementsByClassName("element");
+    //console.log(divs);
+    divsCount = divs.length;
+    //console.log('divy1 ' + divsCount);
+    //console.log(divsIds)
     for (var i = 0; i < divsCount; i++) {
+        //divsIds.push(currentDiv);
         divs[i].onclick = function getID() {
             currentDiv = this.id;
             console.log(currentDiv);
             if (twoDivs.length == 0) {
                 twoDivs[0] = currentDiv;
-                console.log(twoDivs);
+                //console.log(twoDivs);
             }
             else if (twoDivs.length == 1) {
                 if (currentDiv == twoDivs[0]) {
-                    console.log('taki sam');
+                    //console.log('taki sam');
                     return;
                 }
                 twoDivs[1] = currentDiv;
                 console.log(twoDivs);
-                console.log('kolumny');
-                console.log(columnsNumber);
-                checkID(twoDivs, columnsNumber);
-                console.log('tablica pełna');
-                clearTab(twoDivs);
-                console.log(twoDivs);
+                //console.log('kolumny');
+                //console.log(columnsNumber);
+                //checkID(twoDivs, columnsNumber);
+
+                if (checkID(twoDivs, columnsNumber) == true) {
+                    //console.log(divs);
+                    //console.log('divy2 ' + divsCount);
+                    //console.log('działa');
+                    console.log('tablica pełna');
+                    clearTab(twoDivs);
+                    console.log(twoDivs);
+                    console.log('rows: ' + rowsNumber)
+                    for (var r = 0; r < rowsNumber; r++) {
+                        for (let item of divs) {
+                            divsIds.push(item.id)
+                            //console.log(item.id);
+                            //console.log(divsIds);
+                        }
+                        let id2 = 0
+
+                        for (let id of divsIds) {
+                            if ((parseInt(id2) + parseInt(columnsNumber)) >= (parseInt(divsCount))) {
+                                break;
+                            }
+                            let currentColor = document.getElementById(id).style.backgroundColor;
+                            //console.log(currentColor)
+                            //console.log(id);
+                            //console.log('div pod: ' + (parseInt(id) + parseInt(columnsNumber)));]
+                            if (document.getElementById(parseInt(id) + parseInt(columnsNumber)).style.backgroundColor == 'rgb(255, 255, 255)') {
+                                document.getElementById((parseInt(id) + parseInt(columnsNumber))).style.backgroundColor = currentColor;
+                                document.getElementById(id).style.backgroundColor = 'rgb(255, 255, 255)';
+                                console.log("sprawdzam")
+                            }
+                            //console.log('id2:' + id2)
+                            id2++;
+                        }
+                    }
+                }
+
             }
             else {
                 clearTab(twoDivs);
             }
         }
     }
-    clearTab(divs);
-    clearTab(colorsTab);
-    elementsNumber = 0;
 }
